@@ -52,13 +52,26 @@ namespace ZKCloud.Web {
             app.UsePerHttpRequestContainer();
 			app.UseSession();
             app.UseMvc(routes => {
+
+                // 注释掉原来的路由配置 by jak
+                //routes.MapRoute(
+                //    name: "default",
+                //    template: "{controller=common}/{action=index}/{id?}",
+                //    defaults: new { app = "common.base" });
+                //routes.MapRoute(
+                //    name: "default_app",
+                //    template: "{app=common.base}/{controller=common}/{action=index}/{id?}");
+
+                //新添加的路由配置 by jak
+                routes.DefaultHandler = new AppRouteHandler();
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=common}/{action=index}/{id?}",
-                    defaults: new { app = "common.base" });
+                    template: "",
+                    defaults: new { app = "common.base", controller = "common", action = "index" });
+
                 routes.MapRoute(
-                    name: "default_app",
-                    template: "{app=common.base}/{controller=common}/{action=index}/{id?}");
+                    name: "app_route",
+                    template: "{app}/{controller}/{action?}/{id?}");
             });
 			
             app.RegisterEntityFrameworkRepositoryContext();
